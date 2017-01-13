@@ -56,7 +56,7 @@ object Dumpa extends App {
 
 
   object AWSCredentialsProvider {
-    val Dev = new ProfileCredentialsProvider("membership")
+    val Dev = new ProfileCredentialsProvider("domains")
     val Prod = new InstanceProfileCredentialsProvider(false)
     val Chain = new AWSCredentialsProviderChain(Dev, Prod)
   }
@@ -138,7 +138,12 @@ object Dumpa extends App {
 //      s3Client.putObject(new PutObjectRequest("roberto-is-just-trying-things-august-2016", s"bang/date=$date/data.csv", is, metadata))
 //  }
 
-  logger.info("Foo "+Await.result(fetchCertificate(Set("roberto-test.cas-beta.guardianapis.com")), 300.seconds))
+  logger.info("Foo "+Await.result(fetchCertificate(Set(
+    "profile.thegulocal.com",
+    "www.thegulocal.com",
+    "sub.thegulocal.com",
+    "idapi.thegulocal.com"
+  )), 300.seconds))
 }
 
 case class Conf(
