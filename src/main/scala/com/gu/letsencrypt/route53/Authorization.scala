@@ -117,7 +117,9 @@ object Authorization {
   } yield k -> v).map(_.toMap)
 
   def acquireChallengeForDomain(reg: Registration, domain: String): Future[Dns01Challenge] = Future {
-    val auth = reg.authorizeDomain(domain)
+    val auth = reg.synchronized { // acme4j is really-really-not-threadsafe
+      reg.authorizeDomain(domain)
+    }
     logger.info("Authorization for domain " + domain)
     val challenge: Dns01Challenge = auth.findChallenge(Dns01Challenge.TYPE)
     if (challenge == null) {
