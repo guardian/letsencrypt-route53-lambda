@@ -9,6 +9,7 @@ import com.amazonaws.regions.Region
 import com.amazonaws.regions.Regions.EU_WEST_1
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.s3.AmazonS3Client
+import com.amazonaws.services.s3.model.S3ObjectId
 import com.gu.letsencrypt.KeyPairs
 import com.gu.letsencrypt.route53.Authorization.registerWithAcmeServerAndAuthoriseDomains
 import org.shredzone.acme4j._
@@ -143,8 +144,9 @@ object Dumpa extends App {
 
 case class Conf(
   domains: Set[String],
-  keyBucket: String, // where we read/write our private key pairs
-  certificateBUcket: String // where the certificate is written out to
+  userKeyS3: S3ObjectId, // private key used to authenticate with the ACME server
+  domainKeyS3: S3ObjectId, // private key used with the SSL certificate
+  certificateS3: S3ObjectId // public certificate
 )
 
 class Dumpa {
